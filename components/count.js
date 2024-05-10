@@ -1,6 +1,6 @@
 import { Component } from '../cola/component.js';
 import { Utils } from '../cola/utils.js';
-import { Button } from '../cola/components/button.js';
+import { Button } from '../cola/dom/button.js';
 import { store } from '../cola/store.js';
 
 export class Count extends Component {
