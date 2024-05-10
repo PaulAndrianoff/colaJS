@@ -20,15 +20,18 @@ class EventEmitter {
 export class Store extends EventEmitter {
     constructor() {
         super();
-        this.data = {}; // Initialize empty data object
+        this.data = {};
     }
 
     setData(newData) {
         this.data = newData;
-        this.emit('dataUpdated', this.data); // Emit event when data is updated
+        this.emit('dataUpdated', this.data);
     }
 
-    getData() {
+    getData(spec = null) {
+        if (null !== spec) {
+            return this.data[spec];
+        }
         return this.data;
     }
 }

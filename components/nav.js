@@ -13,9 +13,9 @@ export class NavComponent extends Component {
         const ul = Utils.createElement('ul', {});
         this.routes.forEach(route => {
             if (true === route.display) {
-                const li = Utils.createElement('li', {});
-                const a = Utils.createElement('a', { href: `#${route.path}` }, [route.label]);
-                li.appendChild(a);
+                const li = Utils.createElement('li', {}, [
+                    Utils.createElement('a', { href: `#${route.link}` }, [route.label])
+                ]);
                 ul.appendChild(li);
             }
         });

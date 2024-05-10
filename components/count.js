@@ -1,6 +1,7 @@
 import { Component } from '../cola/component.js';
 import { Utils } from '../cola/utils.js';
 import { Button } from '../cola/components/button.js';
+import { store } from '../cola/store.js';
 
 export class Count extends Component {
     constructor(props) {
@@ -8,8 +9,9 @@ export class Count extends Component {
         this.state = { count: 0 };
     }
 
-    handleClick = () => { // Use arrow function
+    handleClick = () => {
         this.setState({ count: this.state.count + 1 });
+        store.setData({ count: this.state.count });
     }
 
     render() {

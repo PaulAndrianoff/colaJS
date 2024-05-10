@@ -1,31 +1,68 @@
-export class Router {
+import { Component } from './Component.js';
+
+/**
+ * class Router
+ */
+export class Router extends Component {
     constructor(routes) {
+        super();
         this.routes = routes;
-        this.hasChange = true;
-
-        window.addEventListener('hashchange', this.loadRoute.bind(this));
+        this.currentRoute = null;
+        window.addEventListener('popstate', this.handleRouteChange.bind(this));
     }
 
-    clear () {
-        document.querySelector('#app').innerHTML = '';
+    /**
+     * Method to get current path
+     */
+    handleRouteChange() {
+        const path = window.location.hash.slice(1); // Remove the leading '#' from the hash fragment
+        this.navigateTo(path);
     }
 
-    loadRoute(clear = true) {
-        const path = window.location.hash.slice(1) || '/';
-        const route = this.routes.find(r => r.path === path);
-
-        if (clear) this.clear();
-
-        if (route) {
-            route.handler();
+    /**
+     * Method to render current path
+     * @param {String} path
+     * If not found navigate to '/error'
+     */
+    navigateTo(path) {
+        const matchedRoute = this.matchRoute(path);
+        if (matchedRoute) {
+            if (this.currentRoute && this.currentRoute.component) {
+                this.currentRoute.component.unmount();
+            }
+            this.currentRoute = matchedRoute;
+            this.currentRoute.component.isMounted = false;
+            this.currentRoute.component.props = this.currentRoute.param;
+            this.currentRoute.component.mount();
         } else {
-            this.navigate('/error');
+            this.navigateTo('/error');
         }
     }
 
-    navigate(route) {
-        window.location.hash = route;
-    }
+    /**
+     * @param {String} path 
+     * @returns 
+     */
+    matchRoute(path) {
+        let matchedRoute = null;
+        for (const route of this.routes) {
+            const pattern = new RegExp('^' + route.path.replace(/\{([^}]+)\}/g, '([^/]+)') + '$');
+            const matches = path.match(pattern);
+            if (matches) {
+                const keys = route.path.match(/\{([^}]+)\}/g);
+                const param = {};
+                if (keys) {
+                    keys.forEach((key, index) => {
+                        param[key.slice(1, -1)] = matches[index + 1];
+                    });
+                }
+                matchedRoute = { ...route, param };
+                break; // Stop after finding the first match
+            }
+        }
+        
+        return matchedRoute;
+    }    
 }
 
 export const routes = [];

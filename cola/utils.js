@@ -1,4 +1,10 @@
 export const Utils = {
+    /**
+     * @param {String} tag 
+     * @param {Object} attributes 
+     * @param {Array} children 
+     * @returns 
+     */
     createElement(tag, attributes, children) {
         const element = document.createElement(tag);
         Object.keys(attributes).forEach(key => {
@@ -16,6 +22,9 @@ export const Utils = {
         return element;
     },
 
+    /**
+     * @param {String} title 
+     */
     setDocumentTitle(title) {
         document.title = title;
     }

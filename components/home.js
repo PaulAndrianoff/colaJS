@@ -2,6 +2,7 @@ import { Component } from "../cola/component.js";
 import { Utils } from "../cola/utils.js";
 import { Count } from "./count.js";
 import { Canvas } from "../cola/components/canvas.js";
+import { store } from "../cola/store.js";
 
 export class HomeComponent extends Component {
     render() {

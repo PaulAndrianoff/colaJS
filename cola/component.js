@@ -2,6 +2,9 @@ import { store } from "./store.js";
 import { config } from "../config.js";
 import { routes } from "./router.js";
 
+/**
+ * class Component
+ */
 export class Component {
     constructor(props) {
         this.props = props;
@@ -16,16 +19,33 @@ export class Component {
         this.config = this.getConfig();
     }
 
+    /**
+     * @returns {Array}
+     */
     getConfig () {
         return config;
     }
 
+    /**
+     * @returns {Array}
+     */
     getRoutes () {
         return routes;
     }
 
+    /**
+     * @returns {Store}
+     */
     getStore () {
         return store;
+    }
+
+    /**
+     * @param {String} path 
+     */
+    goTo(path) {
+        window.history.pushState(null, null, '#' + path);
+        window.location.reload()
     }
 
     // Lifecycle method: Called when the component will mount to the DOM
@@ -40,6 +60,9 @@ export class Component {
     // Lifecycle method: Called when the component is about to be unmounted from the DOM
     componentWillUnmount() { }
 
+    /**
+     * @param {Any} newState 
+     */
     setState(newState) {
         this.state = { ...this.state, ...newState };
         if (false === this.isMounted) {
@@ -49,10 +72,18 @@ export class Component {
         }
     }
 
+    /**
+     * @throws {Error} if method not implemented
+     */
     render() {
         throw new Error('You must implement the render method');
     }
 
+    /**
+     * Method called when component is mount
+     * @param {String} parent 
+     * @returns
+     */
     mount(parent = '#app') {
         if (true === this.willMount) {
             this.willMount = !this.willMount;
@@ -70,6 +101,9 @@ export class Component {
         }
     }
 
+    /**
+     * Called when state is updated
+     */
     update() {
         const newVirtualElement = this.render();
         const patches = this.diff(this.element, newVirtualElement);
@@ -78,11 +112,17 @@ export class Component {
         this.componentDidUpdate();
     }
 
+    /**
+     * Method to remove DOM element
+     */
     unmount() {
         this.componentWillUnmount();
         this.element.remove();
     }
 
+    /**
+     * @param {String|Object} parent 
+     */
     setParent(parent) {
         if (typeof parent === 'string') {
             this.parent = document.querySelector(parent);
@@ -91,12 +131,24 @@ export class Component {
         }
     }
 
+    /**
+     * Method to get differences between oldNode and newNode
+     * @param {Object} oldNode 
+     * @param {Object} newNode 
+     * @returns {Array}
+     */
     diff(oldNode, newNode) {
         const patches = [];
         this.diffNodes(oldNode, newNode, patches, 0);
         return patches;
     }
 
+    /**
+     * @param {Object} oldNode 
+     * @param {Object} newNode 
+     * @param {Array} patches 
+     * @param {Int} index 
+     */
     diffNodes(oldNode, newNode, patches, index) {
         if (!oldNode || !newNode) {
             // If one of the nodes is missing, add a replace patch
@@ -126,6 +178,11 @@ export class Component {
         }
     }
 
+    /**
+     * @param {Object} oldNode 
+     * @param {Object} newNode 
+     * @returns {Array}
+     */
     diffAttributes(oldNode, newNode) {
         const attrPatches = [];
         const oldAttrs = Array.from(oldNode.attributes);
@@ -149,8 +206,12 @@ export class Component {
         return attrPatches;
     }
 
+    /**
+     * Apply each patch to the node
+     * @param {Object} node 
+     * @param {Array} patches 
+     */
     patch(node, patches) {
-        // Apply each patch to the node
         patches.forEach(patch => {
             switch (patch.type) {
                 case 'replace':
@@ -188,7 +249,10 @@ export class Component {
         });
     }
         
-
+    /**
+     * @param {String} event 
+     * @param {Function} listener 
+     */
     event(event, listener) {
         this.element.addEventListener(event, listener);
     }

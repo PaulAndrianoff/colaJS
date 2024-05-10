@@ -1,4 +1,11 @@
+/**
+ * class ApiService
+ */
 export class ApiService {
+    /**
+     * @param {String} url
+     * @param {Object} headers
+     */
     static async get(url, headers = {}) {
         try {
             const response = await fetch(url, { headers });
@@ -12,6 +19,12 @@ export class ApiService {
         }
     }
 
+    /**
+     * @param {Strin} url 
+     * @param {Array} data 
+     * @param {Object} headers 
+     * @returns 
+     */
     static async post(url, data, headers = {}) {
         try {
             const response = await fetch(url, {
