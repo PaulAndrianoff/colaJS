@@ -14,6 +14,7 @@ export class Component {
         this.element = null;
         this.isMounted = false;
         this.willMount = false;
+        this.parentClass = null;
         this.store = this.getStore();
         this.routes = this.getRoutes();
         this.config = this.getConfig();
