@@ -1,4 +1,4 @@
-import { Component } from './Component.js';
+import { Component } from "./component.js";
 
 /**
  * class Router
@@ -7,6 +7,8 @@ export class Router extends Component {
     constructor(routes) {
         super();
         this.routes = routes;
+        this.defaultPath = '/';
+        this.errorPath = '/error';
         this.currentRoute = null;
         window.addEventListener('popstate', this.handleRouteChange.bind(this));
     }
@@ -16,13 +18,17 @@ export class Router extends Component {
      */
     handleRouteChange() {
         const path = window.location.hash.slice(1); // Remove the leading '#' from the hash fragment
+        if ('' === path) {
+            this.navigateTo(this.defaultPath);
+            return;
+        }
         this.navigateTo(path);
     }
 
     /**
      * Method to render current path
      * @param {String} path
-     * If not found navigate to '/error'
+     * If not found navigate to errorPath
      */
     navigateTo(path) {
         const matchedRoute = this.matchRoute(path);
@@ -35,7 +41,7 @@ export class Router extends Component {
             this.currentRoute.component.props = this.currentRoute.param;
             this.currentRoute.component.mount();
         } else {
-            this.navigateTo('/error');
+            this.navigateTo(this.errorPath);
         }
     }
 
