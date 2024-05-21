@@ -1,6 +1,6 @@
 import { Component } from "../cola/component.js";
 import { Utils } from "../cola/utils.js";
-import { ApiTest } from "../services/apiTest.js";
+import { ApiProvider } from "../services/apiProvider.js";
 
 export class TestComponent extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ export class TestComponent extends Component {
     }
 
     async componentWillMount() {
-        const api = new ApiTest();
+        const api = new ApiProvider();
         const data = await api.fetchData('https://dogapi.dog/api/v2/breeds');
         this.setState({ breeds: data });
     }

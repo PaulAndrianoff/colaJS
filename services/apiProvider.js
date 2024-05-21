@@ -1,7 +1,7 @@
 import { ApiService } from '../cola/apiService.js';
 import { store } from '../cola/store.js';
 
-export class ApiTest {
+export class ApiProvider {
     async fetchData(url) {
         try {
             const customHeaders = {
