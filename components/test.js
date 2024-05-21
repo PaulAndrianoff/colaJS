@@ -11,7 +11,7 @@ export class TestComponent extends Component {
 
     async componentWillMount() {
         const api = new ApiTest();
-        const data = await api.fetchData();
+        const data = await api.fetchData('https://dogapi.dog/api/v2/breeds');
         this.setState({ breeds: data });
     }
 

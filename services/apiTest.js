@@ -2,13 +2,14 @@ import { ApiService } from '../cola/apiService.js';
 import { store } from '../cola/store.js';
 
 export class ApiTest {
-    async fetchData() {
+    async fetchData(url) {
         try {
             const customHeaders = {
+                origin: "http://localhost:8000",
                 'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
                 'Custom-Header': 'Custom-Value'
             };
-            const data = await ApiService.get('https://dogapi.dog/api/v2/breeds', customHeaders);
+            const data = await ApiService.get(url, customHeaders);
             store.setData(data);
             return data.data;
         } catch (error) {
@@ -17,13 +18,14 @@ export class ApiTest {
         return { 'error': null }
     }
 
-    async postData(data) {
+    async postData(url, data) {
         try {
             const customHeaders = {
+                origin: "http://localhost:8000",
                 'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
                 'Custom-Header': 'Custom-Value'
             };
-            const response = await ApiService.post('https://api.example.com/endpoint', data, customHeaders);
+            const response = await ApiService.post(url, data, customHeaders);
             console.log('Response:', response);
             // Handle response or update component state
         } catch (error) {
